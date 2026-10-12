@@ -1,0 +1,38 @@
+<header class="topbar" *ngIf="auth.isLoggedIn()">
+  <div class="topbar-inner">
+    <a class="brand" routerLink="/contributors">
+      <span class="brand-mark">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg>
+      </span>
+      <span>Fund Ledger</span>
+    </a>
+    <nav class="nav-links">
+      <a routerLink="/contributors" routerLinkActive="active">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Contributors
+      </a>
+      <ng-container *ngIf="auth.isAdmin()">
+        <a routerLink="/admin/manage" routerLinkActive="active">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Manage
+        </a>
+        <a routerLink="/admin/reports" routerLinkActive="active">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+          Reports
+        </a>
+      </ng-container>
+    </nav>
+    <div class="account">
+      <span class="user-avatar">{{ auth.currentUser()?.username?.charAt(0) }}</span>
+      <div class="who">
+        <span class="who-name">{{ auth.currentUser()?.username }}</span>
+        <span class="who-role">{{ auth.currentUser()?.role === 'admin' ? 'Administrator' : 'Viewer' }}</span>
+      </div>
+      <button class="logout" (click)="logout()" title="Log out" aria-label="Log out">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<router-outlet></router-outlet>

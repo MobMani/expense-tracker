@@ -1,0 +1,35 @@
+{
+  "contributors": [
+    {
+      "id": "sample-1",
+      "name": "Alice",
+      "amount": 2500,
+      "date": "2026-09-01",
+      "note": "Monthly contribution"
+    },
+    {
+      "id": "sample-2",
+      "name": "Bob",
+      "amount": 1500,
+      "date": "2026-09-02",
+      "note": "Donation"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "sample-exp-1",
+      "purpose": "Event setup",
+      "amount": 1200,
+      "date": "2026-09-03",
+      "note": "Decorations"
+    },
+    {
+      "id": "sample-exp-2",
+      "purpose": "Food",
+      "amount": 800,
+      "date": "2026-09-04",
+      "note": "Snacks"
+    }
+  ]
+}
+

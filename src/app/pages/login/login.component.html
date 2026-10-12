@@ -1,0 +1,70 @@
+<div class="login-screen">
+  <div class="login-shell">
+    <aside class="brand-panel">
+      <div class="brand-row">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg>
+        </span>
+        <span class="brand-name">Fund Ledger</span>
+      </div>
+
+      <div class="brand-copy">
+        <h2>Every contribution, every expense — accounted for.</h2>
+        <p>A transparent record of what the community gives and how it is spent.</p>
+      </div>
+
+      <ul class="features">
+        <li>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+          Track contributions as they come in
+        </li>
+        <li>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+          Log every expense with its purpose
+        </li>
+        <li>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+          See the balance on hand at a glance
+        </li>
+      </ul>
+    </aside>
+
+    <form class="login-card" (ngSubmit)="submit()">
+      <span class="page-eyebrow">Welcome back</span>
+      <h1>Sign in</h1>
+      <p class="subtitle">Sign in to view or manage the fund.</p>
+
+      <div class="field">
+        <label for="username">Username</label>
+        <div class="input-icon">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <input id="username" name="username" type="text" [(ngModel)]="username" autocomplete="username" placeholder="Enter your username" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-icon">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="current-password" placeholder="Enter your password" />
+        </div>
+      </div>
+
+      <p class="error-text" *ngIf="error">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        {{ error }}
+      </p>
+
+      <button class="btn" type="submit">
+        Sign in
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+
+      <div class="hint">
+        <span class="hint-title">Demo accounts</span>
+        <div class="hint-row"><code>admin / admin123</code><span class="tag">Admin</span></div>
+        <div class="hint-row"><code>user / user123</code><span class="tag tag-muted">Viewer</span></div>
+      </div>
+    </form>
+  </div>
+</div>

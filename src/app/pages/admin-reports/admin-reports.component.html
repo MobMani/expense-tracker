@@ -1,0 +1,149 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <span class="page-eyebrow">Overview</span>
+      <h1>Reports</h1>
+      <p class="page-sub">A read-only view of everything on record.</p>
+    </div>
+  </header>
+
+  <div class="summary-row">
+    <div class="summary-card tone-in">
+      <span class="summary-icon">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </span>
+      <span class="summary-label">Collected</span>
+      <span class="summary-number">{{ data.totalCollected() | number: '1.0-0' }}</span>
+      <span class="summary-sub">{{ data.contributorCount() }} contributors</span>
+    </div>
+    <div class="summary-card tone-out">
+      <span class="summary-icon">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </span>
+      <span class="summary-label">Spent</span>
+      <span class="summary-number">{{ data.totalSpent() | number: '1.0-0' }}</span>
+      <span class="summary-sub">{{ data.expenses().length }} expenses</span>
+    </div>
+    <div class="summary-card tone-balance" [class.is-negative]="data.balance() < 0">
+      <span class="summary-icon">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M16 13h.01M2 10h20M6 6V4h12v2"/></svg>
+      </span>
+      <span class="summary-label">Balance</span>
+      <span class="summary-number" [class.amount-negative]="data.balance() < 0">
+        {{ data.balance() | number: '1.0-0' }}
+      </span>
+      <span class="summary-sub">on hand</span>
+    </div>
+  </div>
+
+  <section class="card meter-card">
+    <div class="meter-head">
+      <span class="meter-title">Funds used</span>
+      <span class="meter-value">{{ spentPercent() | number: '1.0-0' }}%</span>
+    </div>
+    <div class="meter" role="progressbar" [attr.aria-valuenow]="spentPercent()" aria-valuemin="0" aria-valuemax="100">
+      <div class="meter-fill" [style.width.%]="spentPercent()" [class.over]="data.balance() < 0"></div>
+    </div>
+    <div class="meter-legend">
+      <span><i class="dot dot-out"></i>Spent {{ data.totalSpent() | number: '1.0-0' }}</span>
+      <span><i class="dot dot-in"></i>Collected {{ data.totalCollected() | number: '1.0-0' }}</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10Z"/></svg>
+        Spending by purpose
+      </h2>
+      <span class="count-pill">{{ byPurpose().length }} purposes</span>
+    </div>
+    <div class="purpose-list" *ngIf="byPurpose().length; else emptyPurpose">
+      <div class="purpose-row" *ngFor="let p of byPurpose()">
+        <div class="purpose-top">
+          <span class="purpose-name">{{ p.purpose }}</span>
+          <span class="purpose-amount num">
+            {{ p.total | number: '1.0-0' }}
+            <span class="muted">· {{ purposeShare(p.total) | number: '1.0-0' }}%</span>
+          </span>
+        </div>
+        <div class="bar"><div class="bar-fill" [style.width.%]="purposeShare(p.total)"></div></div>
+      </div>
+    </div>
+    <ng-template #emptyPurpose>
+      <div class="empty-state">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10Z"/></svg>
+        No expenses recorded yet.
+      </div>
+    </ng-template>
+  </section>
+
+  <div class="two-col">
+    <section class="card">
+      <div class="card-header">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Contributors
+        </h2>
+        <span class="count-pill">{{ sortedContributors().length }}</span>
+      </div>
+      <div class="table-wrap" *ngIf="sortedContributors().length; else emptyContributors">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of sortedContributors()">
+              <td>
+                <div class="person">
+                  <span class="avatar">{{ c.name.charAt(0) }}</span>
+                  <span>{{ c.name }}</span>
+                </div>
+              </td>
+              <td class="muted">{{ c.date | date: 'mediumDate' }}</td>
+              <td class="text-right"><span class="amount-chip in">{{ c.amount | number: '1.0-0' }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #emptyContributors>
+        <div class="empty-state">No contributors recorded yet.</div>
+      </ng-template>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 1 .7V2l-1 .7-3-2-3 2-3-2-3 2-3-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          All expenses
+        </h2>
+        <span class="count-pill">{{ sortedExpenses().length }}</span>
+      </div>
+      <div class="table-wrap" *ngIf="sortedExpenses().length; else emptyExpenses">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>Purpose</th>
+              <th>Date</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of sortedExpenses()">
+              <td>{{ e.purpose }}</td>
+              <td class="muted">{{ e.date | date: 'mediumDate' }}</td>
+              <td class="text-right"><span class="amount-chip out">{{ e.amount | number: '1.0-0' }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #emptyExpenses>
+        <div class="empty-state">No expenses recorded yet.</div>
+      </ng-template>
+    </section>
+  </div>
+</div>

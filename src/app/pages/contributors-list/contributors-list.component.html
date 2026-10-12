@@ -1,0 +1,66 @@
+<div class="page">
+  <section class="hero">
+    <div class="hero-main">
+      <span class="hero-label">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5Z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/></svg>
+        Total collected
+      </span>
+      <span class="hero-number">{{ data.totalCollected() | number: '1.0-0' }}</span>
+      <span class="hero-sub">
+        from {{ data.contributorCount() }} {{ data.contributorCount() === 1 ? 'contributor' : 'contributors' }}
+      </span>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-label">Average gift</span>
+        <span class="hero-stat-value">{{ average() | number: '1.0-0' }}</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Largest gift</span>
+        <span class="hero-stat-value">{{ largest() | number: '1.0-0' }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Contributors
+      </h2>
+      <span class="count-pill">{{ sorted().length }} on record</span>
+    </div>
+
+    <div class="table-wrap" *ngIf="sorted().length; else empty">
+      <table class="ledger-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th class="text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of sorted()">
+            <td>
+              <div class="person">
+                <span class="avatar">{{ c.name.charAt(0) }}</span>
+                <span>{{ c.name }}</span>
+              </div>
+            </td>
+            <td class="muted">{{ c.date | date: 'mediumDate' }}</td>
+            <td class="text-right"><span class="amount-chip in">{{ c.amount | number: '1.0-0' }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #empty>
+      <div class="empty-state">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        No contributions recorded yet.
+      </div>
+    </ng-template>
+  </section>
+</div>
